@@ -7,7 +7,7 @@ function start() {
   // Sætter interval igang
   console.log(data);
 
-  drawBarChart();
+  drawBarChart(); // Tegn diagrammet første gang ved start.
   interval();
 }
 
@@ -16,23 +16,26 @@ function interval() {
 }
 
 function quePeople() {
-  data.push(Math.floor(Math.random() * 32) + 1);
-
+  // fjern den første vordi og tilføj en tilfældig værdi mellem 1-32
   data.shift();
+  data.push(Math.floor(Math.random() * 32) + 1);
 
   drawBarChart();
 }
 
 const diagram = document.getElementById("diagram");
-diagram.width = 500; // justerer bredden på canvasen
+diagram.width = 900; // justerer bredden på canvasen
 diagram.height = 400;
-const diagramCT = diagram.getContext("2d");
+const diagramContext = diagram.getContext("2d");
 const data = [
-  3, 4, 6, 14, 31, 23, 14, 17, 2, 19, 26, 32, 30, 6, 20, 28, 11, 22, 17, 19, 6,
-  9, 10, 13, 12, 5, 8, 26, 28, 29, 14, 1, 2, 30, 11, 26, 12, 16, 22, 32,
+  12, 23, 8, 15, 20, 30, 25, 18, 28, 22, 12, 16, 28, 20, 14, 19, 25, 10, 28, 18,
+  15, 22, 26, 30, 12, 23, 8, 15, 20, 30, 25, 18, 28, 22, 12, 16, 28, 20, 14, 19,
 ];
 
 function drawBarChart() {
+  // beregn bredden på hver søjle baseret på antallet af elementer i date array
+  const barWidth = diagram.width / data.length;
+
   //find den højeste værdi i arrayet
   const maxVal = Math.max(...data);
 
@@ -40,9 +43,8 @@ function drawBarChart() {
   diagram.height = (maxVal + 10) * 10;
 
   // Variabler til størrelse af søjlerne og margin/padding
-  const barWidth = diagram.width / data.length;
   const barHight = diagram.height - 30;
-  const margin = 10;
+  const margin = 1;
   const padding = 5;
 
   // loop igennem arrayet og tegn hver søjle
@@ -51,17 +53,12 @@ function drawBarChart() {
     const y = diagram.height - data[i] * (barHight / 32) - margin - padding;
 
     // Tilføj farver og stil til søjlerne
-    diagramCT.fillStyle = "#ff0000";
-    diagramCT.fillRect(x, y, barWidth - padding * 2, data[i] * (barHight / 32));
+    diagramContext.fillStyle = "#ff0000";
+    diagramContext.fillRect(
+      x,
+      y,
+      barWidth - padding * 2,
+      data[i] * (barHight / 32)
+    );
   }
-
-  // Tilføj etiketter langs x- og y-aksen.
-  diagramCT.fillStyle = "#000";
-  diagramCT.fillText("0", margin, diagram.height - margin);
-  diagramCT.fillText(maxVal.toString(), margin, margin + 10);
-  diagramCT.fillText(
-    "Personer i kør",
-    diagram.width / 2,
-    diagram.height - margin / 2
-  );
 }
