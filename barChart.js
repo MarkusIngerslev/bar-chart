@@ -16,7 +16,7 @@ function interval() {
 }
 
 function quePeople() {
-  // fjern den første vordi og tilføj en tilfældig værdi mellem 1-32
+  // fjern den første værdi og tilføj en tilfældig værdi mellem 1-32
   data.shift();
   data.push(Math.floor(Math.random() * 32) + 1);
 
